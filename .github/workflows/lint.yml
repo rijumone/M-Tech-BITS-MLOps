@@ -27,4 +27,4 @@ jobs:
           poetry install
 
       - name: Run Flake8
-        run: flake8 .
+        run: python -m flake8 .
