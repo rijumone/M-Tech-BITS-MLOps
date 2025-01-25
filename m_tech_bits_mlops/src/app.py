@@ -24,9 +24,22 @@ def predict():
     try:
         # Get JSON data from the request
         data = request.get_json()
-
         # Convert the data to a pandas DataFrame
-        df = pd.DataFrame(data)
+        columns = [
+            "CreditScore",
+            "Geography",
+            "Gender",
+            "Age",
+            "Tenure",
+            "Balance",
+            "NumOfProducts",
+            "HasCrCard",
+            "IsActiveMember",
+            "EstimatedSalary"
+        ]
+
+        # Create the DataFrame with the specified column order
+        df = pd.DataFrame(data, columns=columns)
 
         # Drop non-essential columns
         df = df.drop(columns=['RowNumber', 'CustomerId',
@@ -50,9 +63,9 @@ def predict():
         for i in range(len(predictions)):
             response.append({
                 # True if churn (1), False if not churn (0)
-                "chrun_prediction": bool(predictions[i]),
+                "churn_prediction": bool(predictions[i]),
                 # Probability of churn (class 1)
-                "chrun_probability": float(probabilities[i])
+                "churn_probability": float(probabilities[i])
             })
 
         # Return predictions and confidence as a JSON response
@@ -64,4 +77,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)
