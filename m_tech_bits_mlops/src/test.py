@@ -1,5 +1,4 @@
 import requests
-import json
 
 # URL of the Flask app (change if it's running on a different host/port)
 url = "http://localhost:5002/predict"
@@ -30,4 +29,3 @@ if response.status_code == 200:
 else:
     print("Error:", response.status_code)
     print(response.json())
-
