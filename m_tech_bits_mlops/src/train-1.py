@@ -49,7 +49,7 @@ def train_churn_model(df):
 
         max_depth = [3, 6, 10]
         mlflow.log_param("max_depth", max_depth)
-        learning_rate = [0.01, 0.1, 0.2]
+        learning_rate = [0.01, 0.1, 0.2, 0.5]
         mlflow.log_param("learning_rate", learning_rate)
         n_estimators = [50, 100, 150]
         mlflow.log_param("n_estimators", n_estimators)
