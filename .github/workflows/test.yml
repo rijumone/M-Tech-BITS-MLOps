@@ -3,10 +3,10 @@ name: Test
 on:
   push:
     branches:
-      - master  # Adjust branch names as needed
+      - develop
   pull_request:
     branches:
-      - master
+      - develop
 
 jobs:
   pytest-testing:
