@@ -168,3 +168,6 @@ cython_debug/
 .idea/
 
 poetry.lock
+/data
+artifacts/
+mlruns/
