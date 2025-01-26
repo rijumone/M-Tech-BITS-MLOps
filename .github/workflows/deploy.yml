@@ -65,9 +65,9 @@ jobs:
           echo "Configuring GCP project"
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
-    # Upgrade the GKE cluster (replace 'your-cluster' and 'your-zone' with your actual cluster name and zone)
+    # Upgrade the GKE cluster
     - name: Upgrade GKE Cluster
       run: |
-        gcloud container clusters upgrade your-cluster \
-            --zone your-zone \
-            --cluster-version latest  # You can specify a specific version here if needed
+        gcloud container clusters upgrade mlops-ass-1-depl-0-cluster \
+            --zone us-central1 \
+            --cluster-version latest
