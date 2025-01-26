@@ -39,3 +39,32 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64  # Specify platform while building
+
+  upgrade-gke-cluster:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code to access files if needed.
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    # Install Google Cloud SDK
+    - name: Setup Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        version: 'latest'  # Specify the desired version of gcloud
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+    # Authenticate to GCP using the service account key stored in GitHub Secrets
+    - name: Authorize with Google Cloud
+      run: |
+        echo "${{ secrets.GCP_SA_KEY }}" | base64 --decode > ${HOME}/gcloud-service-key.json
+        gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
+    # Upgrade the GKE cluster (replace 'your-cluster' and 'your-zone' with your actual cluster name and zone)
+    - name: Upgrade GKE Cluster
+      run: |
+        gcloud container clusters upgrade your-cluster \
+            --zone your-zone \
+            --cluster-version latest  # You can specify a specific version here if needed
