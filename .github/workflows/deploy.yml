@@ -79,3 +79,4 @@ jobs:
             --zone us-central1 \
             --cluster-version latest \
             --quiet
+            --node_pool default-pool pool-1 pool-2 pool-3 pool-4 pool-5 pool-6
