@@ -3,10 +3,10 @@ name: Lint
 on:
   push:
     branches:
-      - master  # Adjust branch names as needed
+      - develop
   pull_request:
     branches:
-      - master
+      - develop
 
 jobs:
   flake8-linting:

@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .   # Tells Docker Compose to use the Dockerfile in the current directory
+    ports:
+      - 7951:5000  # Map port 5000 of the container to port 7951 on the host
+    environment:
+      FLASK_ENV: production  # Set an environment variable inside the service
+    volumes:
+      - .:/app  # Mount the current directory into /app in the container for live code updates (optional)

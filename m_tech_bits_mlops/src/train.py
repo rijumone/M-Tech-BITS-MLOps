@@ -1,3 +1,4 @@
+import mlflow.models
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score, classification_report
@@ -9,13 +10,13 @@ from loguru import logger
 
 
 mlflow.set_tracking_uri("http://0.0.0.0:5000")
-mlflow.set_experiment('exp-1')
+mlflow.set_experiment('exp-2')
 
 
 # Load the dataset (assuming it's already loaded as a pandas DataFrame)
 def train_churn_model(df):
-    test_size = 0.25
-    random_state = 3242
+    test_size = 0.2
+    random_state = 42
     # Start an MLflow run
     with mlflow.start_run():
         mlflow.log_param("test_size", test_size)
@@ -24,6 +25,10 @@ def train_churn_model(df):
         # Drop non-essential columns
         mlflow.log_artifact("./data/Churn_Modelling.csv")
         df = df.drop(["RowNumber", "CustomerId", "Surname"], axis=1)
+        mlflow_df = mlflow.data.from_pandas(
+            df, source="./data/Churn_Modelling.csv", name="emp-sal", targets="Exited"
+        )
+        mlflow.log_input(mlflow_df, context='training')
 
         # Encode categorical variables
         label_encoders = {}
@@ -44,7 +49,8 @@ def train_churn_model(df):
 
         # Initialize the XGBoost classifier
         model = XGBClassifier(use_label_encoder=False, eval_metric="logloss")
-
+        # log model to mlflow
+        # mlflow.xgboost.autolog()
         max_depth = [3, 6, 10]
         mlflow.log_param("max_depth", max_depth)
         learning_rate = [0.01, 0.1, 0.2, 0.5]
@@ -84,6 +90,15 @@ def train_churn_model(df):
 
         # Make predictions with the best model
         y_pred = best_model.predict(X_test)
+        signature = mlflow.models.infer_signature(X_test, y_pred)
+
+        # Log the sklearn model and register as version 1
+        mlflow.xgboost.log_model(
+            xgb_model=best_model,
+            artifact_path="xgboost-model",
+            signature=signature,
+            registered_model_name="xgboost-best-reg-model",
+        )
 
         # Evaluate the model
         _accuracy_score = accuracy_score(y_test, y_pred)
