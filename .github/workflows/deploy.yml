@@ -56,8 +56,8 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
 
     # Authenticate gcloud
-    - name: Authenticate gcloud
-      run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+    # - name: Authenticate gcloud
+    #   run: gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
   
 
     - name: Configure GCP project
