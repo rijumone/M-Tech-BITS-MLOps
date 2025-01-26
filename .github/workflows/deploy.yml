@@ -77,4 +77,5 @@ jobs:
       run: |
         gcloud container clusters upgrade mlops-ass-1-depl-0-cluster \
             --zone us-central1 \
-            --cluster-version latest
+            --cluster-version latest \
+            --quiet
